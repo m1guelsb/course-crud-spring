@@ -1,6 +1,7 @@
 package com.m1guelsb.crudspring.course;
 
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.Length;
 
 import jakarta.persistence.Column;
@@ -18,6 +19,7 @@ import lombok.Data;
 @Table(name = "courses")
 @Data
 @SQLDelete(sql = "UPDATE courses SET status = 'DISABLED' WHERE id = ?")
+@Where(clause = "status = 'ENABLED'")
 public class CourseEntity {
 
   @Id
@@ -35,4 +37,10 @@ public class CourseEntity {
   @Length(max = 10)
   @Column(length = 10, nullable = false)
   private String category;
+
+  @NotNull
+  @Length(max = 10)
+  @Column(length = 10, nullable = false)
+  @Pattern(regexp = "ENABLED|DISABLED")
+  private String status = "ENABLED";
 }

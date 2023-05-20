@@ -32,7 +32,6 @@ public class CourseController {
   @ResponseStatus(code = HttpStatus.CREATED)
   public CourseEntity create(@RequestBody @Valid CourseEntity courseDto) {
     return courseRepository.save(courseDto);
-    // return ResponseEntity.status(HttpStatus.CREATED).body(newCourse);
   }
 
   @GetMapping
