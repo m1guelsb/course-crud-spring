@@ -28,26 +28,26 @@ public class CourseController {
     this.courseService = courseService;
   }
 
-  @PostMapping
-  @ResponseStatus(code = HttpStatus.CREATED)
-  public CourseEntity create(@RequestBody @Valid CourseEntity courseDto) {
-    return courseService.create(courseDto);
-  }
-
   @GetMapping
-  public List<CourseEntity> list() {
-    return courseService.list();
+  public List<CourseDTO> list() {
+    return courseService.findAll();
   }
 
   @GetMapping("/{id}")
-  public CourseEntity findById(@PathVariable @NotNull String id) {
+  public CourseDTO findById(@PathVariable @NotNull String id) {
     return courseService.findById(id);
   }
 
+  @PostMapping
+  @ResponseStatus(code = HttpStatus.CREATED)
+  public CourseDTO create(@RequestBody @Valid @NotNull CourseDTO courseReqDTO) {
+    return courseService.create(courseReqDTO);
+  }
+
   @PutMapping("/{id}")
-  public CourseEntity update(@PathVariable @NotNull String id,
-      @RequestBody @Valid CourseEntity courseDto) {
-    return courseService.update(id, courseDto);
+  public CourseDTO update(@PathVariable @NotNull String id,
+      @RequestBody @Valid @NotNull CourseDTO courseReqDTO) {
+    return courseService.update(id, courseReqDTO);
 
   }
 

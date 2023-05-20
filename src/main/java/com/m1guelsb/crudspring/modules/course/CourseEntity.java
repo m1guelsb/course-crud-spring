@@ -42,5 +42,6 @@ public class CourseEntity {
   @Length(max = 10)
   @Column(length = 10, nullable = false)
   @Pattern(regexp = "ENABLED|DISABLED")
+  // @JsonIgnore
   private String status = "ENABLED";
 }
