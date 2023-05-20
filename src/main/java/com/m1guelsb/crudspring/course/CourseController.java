@@ -22,48 +22,45 @@ import jakarta.validation.constraints.NotNull;
 @RestController
 @RequestMapping("/api/courses")
 public class CourseController {
-  private final CourseRepository courseRepository;
 
-  public CourseController(CourseRepository courseRepository) {
-    this.courseRepository = courseRepository;
+  private final CourseService courseService;
+
+  public CourseController(CourseService courseService) {
+    this.courseService = courseService;
   }
 
   @PostMapping
   @ResponseStatus(code = HttpStatus.CREATED)
   public CourseEntity create(@RequestBody @Valid CourseEntity courseDto) {
-    return courseRepository.save(courseDto);
+    return courseService.create(courseDto);
   }
 
   @GetMapping
   public List<CourseEntity> list() {
-    return courseRepository.findAll();
+    return courseService.list();
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<CourseEntity> findById(@PathVariable @NotNull String id) {
-    return courseRepository.findById(id).map(course -> ResponseEntity.ok().body(course))
+    return courseService.findById(id)
+        .map(course -> ResponseEntity.ok().body(course))
         .orElse(ResponseEntity.notFound().build());
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<CourseEntity> update(@PathVariable @NotNull String id,
       @RequestBody @Valid CourseEntity courseDto) {
-    return courseRepository.findById(id)
-        .map(course -> {
-          course.setName(courseDto.getName());
-          course.setCategory(courseDto.getCategory());
-          CourseEntity updatedCourse = courseRepository.save(course);
-          return ResponseEntity.ok().body(updatedCourse);
-        })
+    return courseService.update(id, courseDto)
+        .map(course -> ResponseEntity.ok().body(course))
         .orElse(ResponseEntity.notFound().build());
   }
 
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> delete(@PathVariable @NotNull String id) {
-    return courseRepository.findById(id).map(course -> {
-      courseRepository.deleteById(id);
+    if (courseService.delete(id)) {
       return ResponseEntity.noContent().<Void>build();
-    })
-        .orElse(ResponseEntity.notFound().build());
+    } else {
+      return ResponseEntity.notFound().build();
+    }
   }
 }
