@@ -1,4 +1,4 @@
-package com.m1guelsb.crudspring.course;
+package com.m1guelsb.crudspring.modules.course;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;

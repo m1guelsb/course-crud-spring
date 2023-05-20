@@ -5,8 +5,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import com.m1guelsb.crudspring.course.CourseEntity;
-import com.m1guelsb.crudspring.course.CourseRepository;
+import com.m1guelsb.crudspring.modules.course.CourseEntity;
+import com.m1guelsb.crudspring.modules.course.CourseRepository;
 
 @SpringBootApplication
 public class CrudSpringApplication {

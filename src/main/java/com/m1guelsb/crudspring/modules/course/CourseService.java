@@ -1,11 +1,12 @@
-package com.m1guelsb.crudspring.course;
+package com.m1guelsb.crudspring.modules.course;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
+
+import com.m1guelsb.crudspring.exception.NotFoundException;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -27,24 +28,22 @@ public class CourseService {
     return courseRepository.findAll();
   }
 
-  public Optional<CourseEntity> findById(@PathVariable @NotNull String id) {
-    return courseRepository.findById(id);
+  public CourseEntity findById(@PathVariable @NotNull String id) {
+    return courseRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
   }
 
-  public Optional<CourseEntity> update(@NotNull String id, @Valid CourseEntity courseDto) {
+  public CourseEntity update(@NotNull String id, @Valid CourseEntity courseDto) {
     return courseRepository.findById(id)
         .map(course -> {
           course.setName(courseDto.getName());
           course.setCategory(courseDto.getCategory());
           return courseRepository.save(course);
-        });
+        }).orElseThrow(() -> new NotFoundException(id));
   }
 
-  public boolean delete(@PathVariable @NotNull String id) {
-    return courseRepository.findById(id).map(course -> {
-      courseRepository.deleteById(id);
-      return true;
-    }).orElse(false);
+  public void delete(@PathVariable @NotNull String id) {
+    courseRepository.delete(courseRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException(id)));
   }
 
 }

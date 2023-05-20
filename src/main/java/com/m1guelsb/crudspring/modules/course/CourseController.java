@@ -1,9 +1,8 @@
-package com.m1guelsb.crudspring.course;
+package com.m1guelsb.crudspring.modules.course;
 
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,26 +40,20 @@ public class CourseController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<CourseEntity> findById(@PathVariable @NotNull String id) {
-    return courseService.findById(id)
-        .map(course -> ResponseEntity.ok().body(course))
-        .orElse(ResponseEntity.notFound().build());
+  public CourseEntity findById(@PathVariable @NotNull String id) {
+    return courseService.findById(id);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<CourseEntity> update(@PathVariable @NotNull String id,
+  public CourseEntity update(@PathVariable @NotNull String id,
       @RequestBody @Valid CourseEntity courseDto) {
-    return courseService.update(id, courseDto)
-        .map(course -> ResponseEntity.ok().body(course))
-        .orElse(ResponseEntity.notFound().build());
+    return courseService.update(id, courseDto);
+
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> delete(@PathVariable @NotNull String id) {
-    if (courseService.delete(id)) {
-      return ResponseEntity.noContent().<Void>build();
-    } else {
-      return ResponseEntity.notFound().build();
-    }
+  @ResponseStatus(code = HttpStatus.NO_CONTENT)
+  public void delete(@PathVariable @NotNull String id) {
+    courseService.delete(id);
   }
 }
