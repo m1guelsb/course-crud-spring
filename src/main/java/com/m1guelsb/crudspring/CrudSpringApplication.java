@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import com.m1guelsb.crudspring.modules.course.CourseEntity;
 import com.m1guelsb.crudspring.modules.course.CourseRepository;
 import com.m1guelsb.crudspring.modules.course.enums.CategoryEnum;
+import com.m1guelsb.crudspring.modules.lesson.LessonEntity;
 
 @SpringBootApplication
 public class CrudSpringApplication {
@@ -24,6 +25,13 @@ public class CrudSpringApplication {
 			CourseEntity course = new CourseEntity();
 			course.setName("Javiscripti");
 			course.setCategory(CategoryEnum.FRONT_END);
+
+			LessonEntity lesson = new LessonEntity();
+			lesson.setName("Introduction");
+			lesson.setSourceURL("https://www.youtube.com/watch?v=4kEO7VjKRB8");
+			lesson.setCourse(course);
+
+			course.getLessons().add(lesson);
 
 			courseRepository.save(course);
 		};

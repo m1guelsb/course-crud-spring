@@ -1,5 +1,8 @@
 package com.m1guelsb.crudspring.modules.course;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.Length;
@@ -8,13 +11,17 @@ import com.m1guelsb.crudspring.modules.course.enums.CategoryEnum;
 import com.m1guelsb.crudspring.modules.course.enums.StatusEnum;
 import com.m1guelsb.crudspring.modules.course.enums.converters.CategoryConverter;
 import com.m1guelsb.crudspring.modules.course.enums.converters.StatusConverter;
+import com.m1guelsb.crudspring.modules.lesson.LessonEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -46,4 +53,8 @@ public class CourseEntity {
   @Column(length = 10, nullable = false)
   @Convert(converter = StatusConverter.class)
   private StatusEnum status = StatusEnum.ENABLED;
+
+  @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<LessonEntity> lessons = new ArrayList();
+
 }
