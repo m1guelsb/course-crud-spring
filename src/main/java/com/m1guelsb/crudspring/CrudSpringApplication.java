@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 
 import com.m1guelsb.crudspring.modules.course.CourseEntity;
 import com.m1guelsb.crudspring.modules.course.CourseRepository;
+import com.m1guelsb.crudspring.modules.course.enums.CategoryEnum;
 
 @SpringBootApplication
 public class CrudSpringApplication {
@@ -22,7 +23,7 @@ public class CrudSpringApplication {
 
 			CourseEntity course = new CourseEntity();
 			course.setName("Javiscripti");
-			course.setCategory("ruim");
+			course.setCategory(CategoryEnum.FRONT_END);
 
 			courseRepository.save(course);
 		};

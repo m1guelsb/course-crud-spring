@@ -5,9 +5,10 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.m1guelsb.crudspring.exception.NotFoundException;
+import com.m1guelsb.crudspring.modules.course.dtos.CourseDTO;
+import com.m1guelsb.crudspring.modules.course.dtos.CourseMapper;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -30,7 +31,7 @@ public class CourseService {
         .collect(Collectors.toList());
   }
 
-  public CourseDTO findById(@PathVariable @NotNull String id) {
+  public CourseDTO findById(@NotNull String id) {
     return courseRepository.findById(id).map(courseMapper::toDTO).orElseThrow(() -> new NotFoundException(id));
   }
 
@@ -42,14 +43,13 @@ public class CourseService {
     return courseRepository.findById(id)
         .map(course -> {
           course.setName(courseReqDTO.name());
-          course.setCategory(courseReqDTO.name());
+          course.setCategory(courseMapper.convertCategoryValue(courseReqDTO.category()));
           return courseRepository.save(course);
         }).map(courseMapper::toDTO).orElseThrow(() -> new NotFoundException(id));
   }
 
-  public void delete(@PathVariable @NotNull String id) {
+  public void delete(@NotNull String id) {
     courseRepository.delete(courseRepository.findById(id)
         .orElseThrow(() -> new NotFoundException(id)));
   }
-
 }

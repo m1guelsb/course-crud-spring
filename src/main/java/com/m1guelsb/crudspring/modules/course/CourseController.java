@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.m1guelsb.crudspring.modules.course.dtos.CourseDTO;
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
@@ -48,7 +50,6 @@ public class CourseController {
   public CourseDTO update(@PathVariable @NotNull String id,
       @RequestBody @Valid @NotNull CourseDTO courseReqDTO) {
     return courseService.update(id, courseReqDTO);
-
   }
 
   @DeleteMapping("/{id}")
