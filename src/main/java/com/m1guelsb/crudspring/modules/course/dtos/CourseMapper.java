@@ -1,9 +1,13 @@
 package com.m1guelsb.crudspring.modules.course.dtos;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Component;
 
 import com.m1guelsb.crudspring.modules.course.CourseEntity;
 import com.m1guelsb.crudspring.modules.course.enums.CategoryEnum;
+import com.m1guelsb.crudspring.modules.lesson.dtos.LessonDTO;
 
 @Component
 public class CourseMapper {
@@ -12,7 +16,11 @@ public class CourseMapper {
     if (course == null) {
       return null;
     }
-    return new CourseDTO(course.getId(), course.getName(), course.getCategory().getValue(), course.getLessons());
+    List<LessonDTO> lessons = course.getLessons().stream()
+        .map(lesson -> new LessonDTO(lesson.getId(), lesson.getName(), lesson.getSourceURL()))
+        .collect(Collectors.toList());
+
+    return new CourseDTO(course.getId(), course.getName(), course.getCategory().getValue(), lessons);
   }
 
   public CourseEntity toEntity(CourseDTO courseDTO) {
