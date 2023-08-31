@@ -1,7 +1,6 @@
 package com.m1guelsb.crudspring.modules.lesson;
 
-import org.hibernate.validator.constraints.Length;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.m1guelsb.crudspring.modules.course.CourseEntity;
 
 import jakarta.persistence.Column;
@@ -32,6 +31,7 @@ public class LessonEntity {
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "course_id", nullable = false)
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private CourseEntity course;
 
 }

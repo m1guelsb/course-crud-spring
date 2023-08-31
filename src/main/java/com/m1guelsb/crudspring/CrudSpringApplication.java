@@ -30,8 +30,13 @@ public class CrudSpringApplication {
 			lesson.setName("Introduction");
 			lesson.setSourceURL("https://www.youtube.com/watch?v=4kEO7VjKRB8");
 			lesson.setCourse(course);
-
 			course.getLessons().add(lesson);
+
+			LessonEntity lesson1 = new LessonEntity();
+			lesson1.setName("Introduction1");
+			lesson1.setSourceURL("https://www.youtube.com/watch?v=qt2ltD0dlUY");
+			lesson1.setCourse(course);
+			course.getLessons().add(lesson1);
 
 			courseRepository.save(course);
 		};
