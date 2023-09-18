@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.m1guelsb.crudspring.modules.course.CourseEntity;
 import com.m1guelsb.crudspring.modules.course.enums.CategoryEnum;
+import com.m1guelsb.crudspring.modules.lesson.LessonEntity;
 import com.m1guelsb.crudspring.modules.lesson.dtos.LessonDTO;
 
 @Component
@@ -34,6 +35,18 @@ public class CourseMapper {
     }
     course.setName(courseDTO.name());
     course.setCategory(convertCategoryValue(courseDTO.category()));
+
+    List<LessonEntity> lessons = courseDTO.lessons().stream().map(lessonDTO -> {
+      var lesson = new LessonEntity();
+      lesson.setId(lessonDTO.id());
+      lesson.setName(lessonDTO.name());
+      lesson.setSourceURL(lessonDTO.sourceURL());
+      lesson.setCourse(course);
+      return lesson;
+    }).collect(Collectors.toList());
+
+    course.setLessons(lessons);
+
     return course;
   }
 

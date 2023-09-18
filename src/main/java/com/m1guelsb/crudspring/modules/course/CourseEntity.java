@@ -54,6 +54,6 @@ public class CourseEntity {
   private StatusEnum status = StatusEnum.ENABLED;
 
   @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<LessonEntity> lessons = new ArrayList();
+  private List<LessonEntity> lessons = new ArrayList<>();
 
 }

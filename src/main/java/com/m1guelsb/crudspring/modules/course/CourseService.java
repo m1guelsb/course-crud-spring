@@ -41,11 +41,16 @@ public class CourseService {
 
   public CourseDTO update(@NotNull String id, @Valid @NotNull CourseDTO courseReqDTO) {
     return courseRepository.findById(id)
-        .map(course -> {
-          course.setName(courseReqDTO.name());
-          course.setCategory(courseMapper.convertCategoryValue(courseReqDTO.category()));
-          return courseRepository.save(course);
-        }).map(courseMapper::toDTO).orElseThrow(() -> new NotFoundException(id));
+        .map(recordFound -> {
+          CourseEntity course = courseMapper.toEntity(courseReqDTO);
+          recordFound.setName(courseReqDTO.name());
+          recordFound.setCategory(courseMapper.convertCategoryValue(courseReqDTO.category()));
+
+          recordFound.getLessons().clear();
+          course.getLessons().forEach(recordFound.getLessons()::add);
+
+          return courseMapper.toDTO(courseRepository.save(recordFound));
+        }).orElseThrow(() -> new NotFoundException(id));
   }
 
   public void delete(@NotNull String id) {
