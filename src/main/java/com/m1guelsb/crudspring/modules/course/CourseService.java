@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import com.m1guelsb.crudspring.exception.NotFoundException;
+import com.m1guelsb.crudspring.exception.RecordNotFoundException;
 import com.m1guelsb.crudspring.modules.course.dtos.CourseDTO;
 import com.m1guelsb.crudspring.modules.course.dtos.CourseMapper;
 
@@ -32,7 +32,7 @@ public class CourseService {
   }
 
   public CourseDTO findById(@NotNull String id) {
-    return courseRepository.findById(id).map(courseMapper::toDTO).orElseThrow(() -> new NotFoundException(id));
+    return courseRepository.findById(id).map(courseMapper::toDTO).orElseThrow(() -> new RecordNotFoundException(id));
   }
 
   public CourseDTO create(@Valid @NotNull CourseDTO courseReqDTO) {
@@ -50,11 +50,11 @@ public class CourseService {
           course.getLessons().forEach(recordFound.getLessons()::add);
 
           return courseMapper.toDTO(courseRepository.save(recordFound));
-        }).orElseThrow(() -> new NotFoundException(id));
+        }).orElseThrow(() -> new RecordNotFoundException(id));
   }
 
   public void delete(@NotNull String id) {
     courseRepository.delete(courseRepository.findById(id)
-        .orElseThrow(() -> new NotFoundException(id)));
+        .orElseThrow(() -> new RecordNotFoundException(id)));
   }
 }
